@@ -18,7 +18,6 @@ For commercial licensing, please contact support@quantumnous.com
 */
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Typography, Tag } from '@douyinfe/semi-ui';
 import SkeletonWrapper from '../components/SkeletonWrapper';
 
@@ -37,8 +36,13 @@ const HeaderLogo = ({
     return null;
   }
 
+  // Drawia: native <a href='/'> triggers a full page reload so the static
+  // Drawia landing HTML served by nginx renders, instead of the in-SPA Home
+  // page (which would only mount inside the React app). Replaces the
+  // upstream <Link to='/'> + a global click interceptor previously injected
+  // by nginx.
   return (
-    <Link to='/' className='group flex items-center gap-2'>
+    <a href='/' className='group flex items-center gap-2'>
       <div className='relative w-8 h-8 md:w-8 md:h-8'>
         <SkeletonWrapper loading={isLoading || !logoLoaded} type='image' />
         <img
@@ -74,7 +78,7 @@ const HeaderLogo = ({
           )}
         </div>
       </div>
-    </Link>
+    </a>
   );
 };
 
