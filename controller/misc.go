@@ -281,7 +281,7 @@ func SendEmailVerification(c *gin.Context) {
 		})
 		return
 	}
-	code := common.GenerateVerificationCode(6)
+	code := common.GenerateNumericCode(6) // Drawia: 6-digit numeric (user-typed); see common/verification.go
 	common.RegisterVerificationCodeWithKey(email, code, common.EmailVerificationPurpose)
 	subject := fmt.Sprintf("%s邮箱验证邮件", common.SystemName)
 	content := fmt.Sprintf("<p>您好，你正在进行%s邮箱验证。</p>"+

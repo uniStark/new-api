@@ -1,6 +1,8 @@
 package common
 
 import (
+	"crypto/rand"
+	"math/big"
 	"strings"
 	"sync"
 	"time"
@@ -30,6 +32,30 @@ func GenerateVerificationCode(length int) string {
 		return code
 	}
 	return code[:length]
+}
+
+// GenerateNumericCode returns a string of cryptographically random decimal
+// digits ('0'-'9') of the given length. Used by Drawia for email verification
+// where end users type the code into a UI; numeric is friendlier than the
+// hex string produced by GenerateVerificationCode. Drawia fork only.
+func GenerateNumericCode(length int) string {
+	if length <= 0 {
+		return ""
+	}
+	const digits = "0123456789"
+	max := big.NewInt(int64(len(digits)))
+	code := make([]byte, length)
+	for i := 0; i < length; i++ {
+		n, err := rand.Int(rand.Reader, max)
+		if err != nil {
+			// Cryptographic RNG should not fail; on the off chance, fall back
+			// to '0' rather than panic — the user can just retry.
+			code[i] = '0'
+			continue
+		}
+		code[i] = digits[n.Int64()]
+	}
+	return string(code)
 }
 
 func RegisterVerificationCodeWithKey(key string, code string, purpose string) {
