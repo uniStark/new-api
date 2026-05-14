@@ -47,8 +47,10 @@ jobs:
           else
             TAG="${GITHUB_REF#refs/tags/}"
           fi
+          # GHCR repo names must be lowercase; the owner login may be mixed case.
+          OWNER_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
           echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
-          echo "image=ghcr.io/${{ github.repository_owner }}/new-api:${TAG}" >> "$GITHUB_OUTPUT"
+          echo "image=ghcr.io/${OWNER_LC}/new-api:${TAG}" >> "$GITHUB_OUTPUT"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
