@@ -117,6 +117,20 @@ const PageLayout = () => {
     }
   }, []);
 
+  // Drawia: page-class data attribute drives brand CSS selectors (replaces
+  // the inline `$drawia_page_script` that nginx used to inject on </head>).
+  useEffect(() => {
+    const p = location.pathname || '/';
+    const page = /^\/(login|register|reset|oauth)/.test(p)
+      ? 'auth'
+      : /^\/pricing/.test(p)
+        ? 'pricing'
+        : /^\/(console|dashboard)/.test(p)
+          ? 'console'
+          : 'public';
+    document.documentElement.setAttribute('data-drawia-page', page);
+  }, [location.pathname]);
+
   useEffect(() => {
     let preferredLang;
 
