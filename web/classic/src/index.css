@@ -1024,3 +1024,159 @@ html.dark .with-pastel-balls::before {
 }
 
 .ec-dbcd0a3c01b55203 { forced-color-adjust: auto; }
+
+/* ====================================================================
+ * Drawia brand overlay
+ *
+ * Replaces what nginx used to inject via `sub_filter '</head>'` of two
+ * server-side variables ($drawia_brand_tokens + $drawia_public_css).
+ * Loaded as part of the CSS bundle so it survives without nginx help.
+ *
+ * Keep this block at the end so it wins specificity ties against
+ * upstream Semi UI / Tailwind utility classes.
+ * ==================================================================== */
+
+:root,
+body,
+html {
+  --drawia-orange: #ff7849;
+  --drawia-orange-strong: #e85f30;
+  --drawia-cream: #fffaf5;
+  /* Semi UI brand tokens — Drawia palette */
+  --semi-color-primary: #ff7849 !important;
+  --semi-color-primary-hover: #ff8a5e !important;
+  --semi-color-primary-active: #e85f30 !important;
+  --semi-color-primary-disabled: #ffbfa4 !important;
+  --semi-color-primary-light-default: rgba(255, 120, 73, 0.08) !important;
+  --semi-color-primary-light-hover: rgba(255, 120, 73, 0.14) !important;
+  --semi-color-primary-light-active: rgba(255, 120, 73, 0.2) !important;
+  --semi-color-link: #ff7849 !important;
+  --semi-color-link-hover: #ff8a5e !important;
+  --semi-color-link-active: #e85f30 !important;
+  --semi-color-link-visited: #ff7849 !important;
+  --semi-color-focus-border: #ff7849 !important;
+}
+
+body {
+  background-color: #fffaf5;
+  color: #241b16;
+}
+
+.semi-button.semi-button-primary,
+.semi-button.semi-button-solid,
+.semi-button-primary,
+button[class*='bg-primary'] {
+  background: linear-gradient(135deg, #ff7849 0%, #e85f30 100%) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+  box-shadow: 0 14px 30px rgba(232, 95, 48, 0.18);
+}
+
+.semi-button.semi-button-primary:hover,
+.semi-button.semi-button-solid:hover,
+button[class*='bg-primary']:hover {
+  background: linear-gradient(135deg, #ff8a5e 0%, #ff7849 100%) !important;
+}
+
+.semi-button {
+  border-radius: 12px !important;
+}
+
+.semi-button-with-icon,
+.semi-button-primary,
+.semi-button-solid {
+  border-radius: 980px !important;
+}
+
+.semi-input-wrapper,
+.semi-input,
+input,
+textarea {
+  border-radius: 12px !important;
+}
+
+.semi-card,
+.semi-modal-content,
+[class*='rounded-xl'],
+[class*='rounded-2xl'] {
+  border-color: rgba(232, 95, 48, 0.12);
+}
+
+a,
+.semi-typography-link {
+  color: #ff7849 !important;
+}
+
+a:hover,
+.semi-typography-link:hover {
+  color: #e85f30 !important;
+}
+
+/* Auth pages (login / register / reset / oauth) — glassmorphism + warm gradient */
+html[data-drawia-page='auth'] body {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 16% 12%,
+      rgba(255, 120, 73, 0.24),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 82% 18%,
+      rgba(255, 194, 133, 0.22),
+      transparent 28%
+    ),
+    linear-gradient(180deg, #fffaf5 0%, #fff3e8 100%) !important;
+}
+
+html[data-drawia-page='auth'] form,
+html[data-drawia-page='auth'] [class*='card'],
+html[data-drawia-page='auth'] [class*='Card'] {
+  border-radius: 28px !important;
+  box-shadow: 0 28px 80px rgba(78, 37, 17, 0.14) !important;
+  border-color: rgba(232, 95, 48, 0.14) !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  backdrop-filter: blur(18px);
+}
+
+/* Pricing page — replace the upstream oklch gradient hero with a warm Drawia version */
+html[data-drawia-page='pricing'] [aria-hidden][style*='oklch'] {
+  background:
+    radial-gradient(
+      ellipse 58% 48% at 18% 18%,
+      rgba(255, 120, 73, 0.48) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 48% 38% at 82% 14%,
+      rgba(255, 178, 105, 0.36) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 42% 34% at 50% 70%,
+      rgba(232, 95, 48, 0.26) 0%,
+      transparent 72%
+    ) !important;
+}
+
+html[data-drawia-page='pricing'] header h1 {
+  background: linear-gradient(120deg, #3a2117 0%, #ff7849 55%, #e85f30 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+html[data-drawia-page='pricing'] [class*='border'],
+html[data-drawia-page='auth'] [class*='border'] {
+  border-color: rgba(232, 95, 48, 0.14) !important;
+}
+
+html[data-drawia-page='console'] body {
+  background: #fbfaf8 !important;
+}
+
+/* Hide upstream attribution links that might leak through deep components */
+div:has(> a[href*='QuantumNous/new-api']),
+a[href*='QuantumNous/new-api'] {
+  display: none !important;
+}
